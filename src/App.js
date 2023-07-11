@@ -13,6 +13,13 @@ function App() {
     setLoading(true);
 
     const response = await fetch("https://swapi.dev/api/films/");
+    if (response.status !== 200) {
+      setError(true);
+      setLoading(false);
+      return;
+    } else {
+      setError(false);
+    }
     const data = await response.json();
 
     const modifiedData = data.results.map((item) => {
