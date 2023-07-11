@@ -12,7 +12,7 @@ function App() {
     setError("");
     setLoading(true);
     try {
-      const response = await fetch("https://swapi.dev/api/film/");
+      const response = await fetch("https://swapi.dev/api/films/");
       if (!response.ok) {
         throw new Error("Error, something went wrong!");
       }
@@ -32,6 +32,9 @@ function App() {
     }
     setLoading(false);
   }
+  /**
+   * Event management based on states
+   */
   let content = <p>no movie found!</p>;
 
   if (error) {
