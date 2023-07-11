@@ -11,7 +11,6 @@ function App() {
     setFetchedData([]);
     setError(false);
     setLoading(true);
-
     const response = await fetch("https://swapi.dev/api/films/");
     if (response.status !== 200) {
       setError(true);
@@ -33,13 +32,13 @@ function App() {
     setLoading(false);
     setFetchedData(modifiedData);
   }
-  console.log(fetchedData);
+
   return (
     <div className="App">
       <button onClick={loadingDataHandler}>Loading Data</button>
-      {loading ? <p>loading</p> : ""}
+      {loading ? <p>loading</p> : <ListItem person={fetchedData} />}
+      {!loading && fetchedData.length === 0 && <p>No movie yet!</p>}
       {error ? <p>Error</p> : ""}
-      <ListItem person={fetchedData} />
     </div>
   );
 }
