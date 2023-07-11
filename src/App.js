@@ -36,7 +36,8 @@ function App() {
   return (
     <div className="App">
       <button onClick={loadingDataHandler}>Loading Data</button>
-      {loading ? <p>loading</p> : <ListItem person={fetchedData} />}
+      <ListItem person={fetchedData} />
+      {loading && <p>loading</p>}
       {!loading && fetchedData.length === 0 && <p>No movie yet!</p>}
       {error ? <p>Error</p> : ""}
     </div>
