@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import ListItem from "./Components/ListItem";
 
@@ -8,7 +8,13 @@ function App() {
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState();
 
+  useEffect(() => {
+    loadingDataHandler();
+    console.log("useeffect");
+  }, []);
+
   async function loadingDataHandler() {
+    console.log("async");
     setFetchedData([]);
     setError();
     setIsLoading(true);
