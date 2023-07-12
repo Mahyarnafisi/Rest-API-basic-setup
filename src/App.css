@@ -38,3 +38,20 @@ button:hover {
   box-shadow: 0.3rem 0.3rem 0rem #00000015;
   color: #444444;
 }
+
+.loading {
+  animation: loading 1s infinite;
+  margin: 1rem;
+  color: darkslategray;
+}
+
+@keyframes loading {
+  0%,
+  100% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}

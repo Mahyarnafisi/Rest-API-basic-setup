@@ -4,54 +4,55 @@ import ListItem from "./Components/ListItem";
 
 function App() {
   const [fetchedData, setFetchedData] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState();
+  const [isLoading, setIsLoading] = useState();
+  //
 
   async function loadingDataHandler() {
     setFetchedData([]);
-    setError("");
-    setLoading(true);
+    setError();
+    setIsLoading(true);
     try {
       const response = await fetch("https://swapi.dev/api/films/");
+
       if (!response.ok) {
-        throw new Error("Error, something went wrong!");
+        throw new Error("OOPS, something went wrong!");
       }
+
       const data = await response.json();
       const modifiedData = data.results.map((item) => {
         return {
           id: (Math.random() * 100).toFixed(2),
-          episode: item.episode_id,
           name: item.title,
           producer: item.producer,
+          episode: item.episode_id,
         };
       });
-      setLoading(false);
+      console.log(modifiedData);
+      setIsLoading(false);
       setFetchedData(modifiedData);
     } catch (error) {
       setError(error.message);
     }
-    setLoading(false);
+    setIsLoading(false);
   }
-  /**
-   * Event management based on states
-   */
-  let content = <p>no movie found!</p>;
 
+  let content = <h4>There is no data yet!</h4>;
+
+  if (isLoading) {
+    content = <h4 className="loading">Loading...</h4>;
+  }
   if (error) {
-    content = <p>{error}</p>;
+    content = <h4>{error}</h4>;
   }
 
-  if (loading) {
-    content = <p>Loading... </p>;
-  }
-
-  if (fetchedData.length > 0) {
+  if (fetchedData.length > 0 && !isLoading) {
     content = <ListItem person={fetchedData} />;
   }
 
   return (
     <div className="App">
-      <button onClick={loadingDataHandler}>Loading Data</button>
+      <button onClick={loadingDataHandler}>Load Data</button>
       {content}
     </div>
   );
