@@ -9,10 +9,7 @@ function App() {
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState();
 
-  console.log("Page Loading /1");
-
   const loadingDataHandler = useCallback(async () => {
-    console.log("async");
     setFetchedData([]);
     setError();
     setIsLoading(true);
@@ -58,7 +55,6 @@ function App() {
   }, []);
 
   useEffect(() => {
-    console.log("useEffect");
     loadingDataHandler();
   }, [loadingDataHandler]);
 
