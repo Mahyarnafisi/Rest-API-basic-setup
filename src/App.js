@@ -18,7 +18,7 @@ function App() {
     setIsLoading(true);
     /**use Try and Catch for async function */
     try {
-      const response = await fetch("https://swapi.dev/api/films/");
+      const response = await fetch("https://codefrombasemenet-default-rtdb.europe-west1.firebasedatabase.app/movies.json");
 
       /**add if statement to Initiate a string as error and jump to catch */
       if (!response.ok) {
@@ -27,18 +27,28 @@ function App() {
 
       const data = await response.json();
 
-      /**Initiate a new variable to store new version of incoming fetched data */
-      const modifiedData = data.results.map((item) => {
-        return {
-          id: (Math.random() * 100).toFixed(2),
-          name: item.title,
-          producer: item.producer,
-          episode: item.episode_id,
-        };
-      });
+      const loadedMovies = [];
+
+      for (const key in data) {
+        loadedMovies.push({
+          id: key,
+          name: data[key].name,
+          episode: data[key].episode,
+          producer: data[key].producer,
+        });
+      }
+
+      // /**Initiate a new variable to store new version of incoming fetched data */
+      // const modifiedData = data.map((item) => {
+      //   return {
+      //     name: item.name,
+      //     episode: item.episode,
+      //     producer: item.producer,
+      //   };
+      // });
 
       setIsLoading(false);
-      setFetchedData(modifiedData);
+      setFetchedData(loadedMovies);
     } catch (error) {
       setError(error.message);
     }
@@ -52,9 +62,23 @@ function App() {
     loadingDataHandler();
   }, [loadingDataHandler]);
 
-  const addNewMovieHandler = (data) => {
-    console.log(data);
-  };
+  /**POST new data to firebase database */
+  async function addNewMovieHandler(movie) {
+    try {
+      const response = await fetch("https://codefrombasemenet-default-rtdb.europe-west1.firebasedatabase.app/movies.json", {
+        method: "POST",
+        body: JSON.stringify(movie),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (!response.ok) {
+        throw new Error("Please try again to update your list");
+      }
+      const data = await response.json();
+    } catch (error) {
+      setError(error.message);
+    }
+  }
 
   /**Initiate a new let variable as a content */
   let content = <h4>There is no data yet!</h4>;
@@ -74,6 +98,7 @@ function App() {
     content = <ListItem person={fetchedData} />;
   }
 
+  //-----------------------------------------------------//
   return (
     <div className="App">
       <button onClick={loadingDataHandler}>Load Data</button>

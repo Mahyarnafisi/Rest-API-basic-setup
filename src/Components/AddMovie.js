@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef } from "react";
 
 function AddMovie(props) {
   const titleRef = useRef();
@@ -7,19 +7,24 @@ function AddMovie(props) {
 
   const submitHandler = (e) => {
     e.preventDefault();
-
-    const addedMovie = {
-      id: Number((Math.random() * 100).toFixed(2)),
-      name: titleRef.current.value,
-      episode: episodeRef.current.value,
-      producer: producerRef.current.value,
-    };
-    props.onAddNewMovie(addedMovie);
-    titleRef.current.value = "";
-    episodeRef.current.value = "";
-    producerRef.current.value = "";
+    /**validation on inputs */
+    if (titleRef.current.value.length === 0 || episodeRef.current.value.length === 0 || producerRef.current.value.length === 0) {
+      return;
+    } else {
+      /**create ene object with unique ID will add with Firebase automatically */
+      const addedMovie = {
+        name: titleRef.current.value,
+        episode: episodeRef.current.value,
+        producer: producerRef.current.value,
+      };
+      /**sending new object up */
+      props.onAddNewMovie(addedMovie);
+      /**resting the inputs */
+      titleRef.current.value = "";
+      episodeRef.current.value = "";
+      producerRef.current.value = "";
+    }
   };
-
   return (
     <div className="add-movie">
       <form className="form" onSubmit={submitHandler}>
