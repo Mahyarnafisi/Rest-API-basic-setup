@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./App.css";
 import ListItem from "./Components/ListItem";
+import AddMovie from "./Components/AddMovie";
 
 function App() {
   /**state Management */
@@ -51,6 +52,10 @@ function App() {
     loadingDataHandler();
   }, [loadingDataHandler]);
 
+  const addNewMovieHandler = (data) => {
+    console.log(data);
+  };
+
   /**Initiate a new let variable as a content */
   let content = <h4>There is no data yet!</h4>;
 
@@ -72,7 +77,7 @@ function App() {
   return (
     <div className="App">
       <button onClick={loadingDataHandler}>Load Data</button>
-
+      <AddMovie onAddNewMovie={addNewMovieHandler} />
       {content}
     </div>
   );
