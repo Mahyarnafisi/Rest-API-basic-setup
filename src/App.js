@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "./App.css";
 import ListItem from "./Components/ListItem";
 
@@ -8,12 +8,9 @@ function App() {
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState();
 
-  useEffect(() => {
-    loadingDataHandler();
-    console.log("useeffect");
-  }, []);
+  console.log("Page Loading /1");
 
-  async function loadingDataHandler() {
+  const loadingDataHandler = useCallback(async () => {
     console.log("async");
     setFetchedData([]);
     setError();
@@ -47,7 +44,12 @@ function App() {
 
     /**reset Loading state to false by end of function  */
     setIsLoading(false);
-  }
+  }, []);
+
+  useEffect(() => {
+    console.log("useEffect");
+    loadingDataHandler();
+  }, [loadingDataHandler]);
 
   /**Initiate a new let variable as a content */
   let content = <h4>There is no data yet!</h4>;
@@ -70,6 +72,7 @@ function App() {
   return (
     <div className="App">
       <button onClick={loadingDataHandler}>Load Data</button>
+
       {content}
     </div>
   );
